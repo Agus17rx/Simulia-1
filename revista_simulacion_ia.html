@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIMULIA — Revista Digital de Simulación e IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0a14;
+  --paper: #f5f0e8;
+  --paper2: #ede8db;
+  --accent: #c84b31;
+  --accent2: #2563c8;
+  --gold: #c8972a;
+  --teal: #1a7a6e;
+  --light: #faf8f3;
+  --mid: #8a8070;
+  --col-w: 680px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ─── NAVIGATION ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+  height: 52px;
+  border-bottom: 3px solid var(--accent);
+}
+
+nav .brand {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.1rem;
+  color: var(--paper);
+  letter-spacing: 0.2em;
+  font-weight: 700;
+}
+nav .brand span { color: var(--accent); }
+
+nav .nav-links {
+  display: flex; gap: 1.5rem; list-style: none;
+}
+nav .nav-links a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--paper);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  transition: opacity 0.2s, color 0.2s;
+}
+nav .nav-links a:hover { opacity: 1; color: var(--accent); }
+
+/* ─── COVER ─── */
+#portada {
+  min-height: 100vh;
+  background: var(--ink);
+  display: grid;
+  place-items: center;
+  padding-top: 52px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(200,75,49,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,75,49,0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: gridDrift 20s linear infinite;
+}
+@keyframes gridDrift { to { transform: translateY(48px); } }
+
+.cover-content {
+  position: relative; z-index: 2;
+  text-align: center;
+  max-width: 900px;
+  padding: 2rem;
+}
+
+.cover-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2rem;
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+}
+.cover-tag::before, .cover-tag::after {
+  content: ''; width: 40px; height: 1px; background: var(--accent);
+}
+
+.cover-issue {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--mid);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(5rem, 14vw, 11rem);
+  font-weight: 900;
+  line-height: 0.9;
+  color: var(--paper);
+  letter-spacing: -0.02em;
+}
+.cover-title .highlight { color: var(--accent); font-style: italic; }
+
+.cover-sub {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gold);
+  margin: 1.5rem 0 2.5rem;
+  letter-spacing: 0.02em;
+}
+
+.cover-deck {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: rgba(245,240,232,0.6);
+  max-width: 520px;
+  margin: 0 auto 3rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.cover-meta {
+  display: flex; align-items: center; justify-content: center; gap: 3rem;
+  border-top: 1px solid rgba(245,240,232,0.15);
+  padding-top: 2rem;
+}
+.cover-meta-item {
+  text-align: center;
+}
+.cover-meta-item .label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 0.25rem;
+}
+.cover-meta-item .value {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--paper);
+  font-weight: 500;
+}
+
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  color: var(--mid);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: bob 2s ease-in-out infinite;
+}
+.scroll-hint::after {
+  content: '↓'; font-size: 1.2rem; color: var(--accent);
+}
+@keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+/* ─── SECTION WRAPPER ─── */
+section { position: relative; }
+
+.section-label {
+  display: flex; align-items: center; gap: 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.3;
+}
+
+/* ─── PRÓLOGO ─── */
+#prologo {
+  background: var(--light);
+  padding: 6rem 2rem;
+}
+
+.prologo-inner {
+  max-width: var(--col-w);
+  margin: 0 auto;
+}
+
+.dropcap {
+  font-family: 'Playfair Display', serif;
+  font-size: 5.5rem;
+  font-weight: 900;
+  line-height: 0.75;
+  float: left;
+  margin: 0.1em 0.12em 0 0;
+  color: var(--accent);
+}
+
+.prologo-text {
+  font-size: 1.1rem;
+  line-height: 1.85;
+  color: #2a2a35;
+  font-weight: 300;
+}
+.prologo-text p { margin-bottom: 1.2em; }
+
+.prologo-signature {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--accent);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.prologo-signature .sig-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--ink);
+}
+.prologo-signature .sig-role {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-top: 0.2rem;
+}
+.prologo-signature .sig-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--mid);
+}
+
+/* ─── ÍNDICE ─── */
+#indice {
+  background: var(--ink);
+  padding: 6rem 2rem;
+  color: var(--paper);
+}
+
+.indice-inner {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.indice-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid rgba(245,240,232,0.15);
+  padding-bottom: 1.5rem;
+}
+
+.indice-list { list-style: none; }
+.indice-item {
+  display: flex; align-items: baseline;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(245,240,232,0.07);
+  cursor: pointer;
+  transition: padding-left 0.3s;
+}
+.indice-item:hover { padding-left: 0.75rem; }
+.indice-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  min-width: 3rem;
+  letter-spacing: 0.1em;
+}
+.indice-name {
+  flex: 1;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.indice-item:hover .indice-name { color: var(--gold); }
+.indice-dots {
+  flex: 1; margin: 0 1rem;
+  border-bottom: 1px dotted rgba(245,240,232,0.2);
+}
+.indice-page {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--mid);
+}
+.indice-item a { text-decoration: none; color: inherit; display: contents; }
+
+/* ─── ARTÍCULOS ─── */
+.article-page {
+  padding: 6rem 2rem;
+}
+.article-page:nth-child(even) { background: var(--paper2); }
+.article-page:nth-child(odd) { background: var(--light); }
+
+.article-inner {
+  max-width: var(--col-w);
+  margin: 0 auto;
+}
+
+.article-category {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.article-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+  color: var(--ink);
+}
+
+.article-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--mid);
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.article-body {
+  font-size: 1rem;
+  line-height: 1.85;
+  font-weight: 300;
+  color: #2a2a35;
+}
+.article-body p { margin-bottom: 1.4em; }
+
+.article-body h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 2rem 0 0.75rem;
+  color: var(--ink);
+}
+
+.pullquote {
+  border-left: 4px solid var(--accent);
+  margin: 2.5rem 0;
+  padding: 1.5rem 2rem;
+  background: rgba(200,75,49,0.05);
+}
+.pullquote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0 !important;
+}
+
+.info-box {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  border-radius: 2px;
+}
+.info-box h4 {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+.info-box ul { padding-left: 1.25rem; }
+.info-box li {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 0.3rem;
+  font-weight: 300;
+}
+
+.article-image-placeholder {
+  width: 100%;
+  aspect-ratio: 16/7;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--accent2) 50%, var(--accent) 100%);
+  display: flex; align-items: center; justify-content: center;
+  margin: 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.article-image-placeholder canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+.img-caption {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--mid);
+  margin-top: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.bibliography {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.bibliography h4 {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 0.75rem;
+}
+.bibliography ol {
+  padding-left: 1.25rem;
+}
+.bibliography li {
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: var(--mid);
+  margin-bottom: 0.4rem;
+  font-style: italic;
+}
+
+/* ─── ACTIVIDAD LÚDICA ─── */
+#actividad {
+  background: var(--ink);
+  padding: 6rem 2rem;
+  color: var(--paper);
+}
+
+.actividad-inner {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.actividad-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.actividad-header .tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.actividad-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.actividad-header p {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: rgba(245,240,232,0.6);
+  font-weight: 300;
+  max-width: 500px;
+  margin-left: auto; margin-right: auto;
+  line-height: 1.7;
+}
+
+/* Game Container */
+#game-container {
+  background: #0d1117;
+  border: 1px solid rgba(245,240,232,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+#game-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+#game-header .game-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+#game-stats {
+  display: flex; gap: 1.5rem;
+}
+.stat {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.5);
+}
+.stat span { color: var(--paper); font-weight: 700; }
+
+#game-canvas-wrapper {
+  position: relative;
+}
+#gameCanvas {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  background: #0d1117;
+}
+
+#game-footer {
+  padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 0.75rem;
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+#game-footer .instructions {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  font-weight: 300;
+}
+#game-footer .instructions b { color: rgba(255,255,255,0.7); font-weight: 500; }
+.btn-game {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.5rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.btn-game:hover { background: #a83822; }
+
+#game-message {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  background: rgba(13,17,23,0.9);
+  backdrop-filter: blur(4px);
+  text-align: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+#game-message h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+}
+#game-message p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 300;
+  max-width: 400px;
+  line-height: 1.6;
+}
+#game-message.hidden { display: none; }
+
+/* Score indicators */
+#feedback {
+  position: absolute; top: 60px; left: 50%; transform: translateX(-50%);
+  font-family: 'Space Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+#feedback.correct { color: #4ade80; }
+#feedback.wrong { color: #f87171; }
+
+/* Actividad instrucciones */
+.activity-rules {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.rule-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 1.25rem;
+  border-radius: 4px;
+}
+.rule-card .icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.rule-card h4 {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+.rule-card p {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: #06060c;
+  color: var(--mid);
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 3px solid var(--accent);
+}
+footer .footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--paper);
+  margin-bottom: 0.5rem;
+}
+footer .footer-logo span { color: var(--accent); font-style: italic; }
+footer p {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  line-height: 2;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 600px) {
+  nav .nav-links { display: none; }
+  .cover-meta { gap: 1.5rem; flex-wrap: wrap; }
+  .indice-dots { display: none; }
+  .activity-rules { grid-template-columns: 1fr; }
+}
+
+/* ─── FADE-IN ANIMATION ─── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="brand">SIM<span>ULIA</span></div>
+  <ul class="nav-links">
+    <li><a href="#portada">Portada</a></li>
+    <li><a href="#prologo">Prólogo</a></li>
+    <li><a href="#articulo1">Artículo 1</a></li>
+    <li><a href="#articulo2">Artículo 2</a></li>
+    <li><a href="#articulo3">Artículo 3</a></li>
+    <li><a href="#actividad">Actividad</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════ PORTADA ═══════════════════ -->
+<section id="portada">
+  <div class="cover-grid"></div>
+  <div class="cover-content">
+    <div class="cover-tag">Revista Digital Académica</div>
+    <div class="cover-issue">Vol. 1 · No. 1 · Junio 2025</div>
+    <h1 class="cover-title">
+      SIM<span class="highlight">ULIA</span>
+    </h1>
+    <p class="cover-sub">Simulación & Inteligencia Artificial</p>
+    <p class="cover-deck">Explorando las fronteras donde los modelos computacionales y la inteligencia artificial convergen para redefinir nuestra comprensión del mundo real.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="label">Tema Central</div>
+        <div class="value">Simulación e IA</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Artículos</div>
+        <div class="value">3 Originales</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Actividad</div>
+        <div class="value">Lúdica Interactiva</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Edición</div>
+        <div class="value">Digital · 2025</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">Desplazar</div>
+</section>
+
+<!-- ═══════════════════ PRÓLOGO ═══════════════════ -->
+<section id="prologo">
+  <div class="prologo-inner fade-in">
+    <div class="section-label">Prólogo</div>
+    <div class="prologo-text">
+      <p><span class="dropcap">E</span>n el umbral de una nueva era tecnológica, la simulación y la inteligencia artificial no son ya disciplinas separadas, sino un continuo epistémico que transforma la manera en que la ciencia y la ingeniería plantean sus preguntas. Donde antes se necesitaban décadas de observación empírica, hoy los algoritmos de aprendizaje profundo pueden anticipar comportamientos emergentes dentro de entornos simulados en cuestión de horas.</p>
+
+      <p>SIMULIA nace como espacio de reflexión rigurosa y accesible para quienes deseen comprender estos desarrollos sin sacrificar el rigor conceptual. Cada número propone un recorrido desde los fundamentos teóricos hasta las aplicaciones más disruptivas, pasando por debates éticos que no pueden aplazarse.</p>
+
+      <p>En esta primera edición hemos convocado tres perspectivas complementarias: la evolución histórica y técnica de los sistemas de simulación asistidos por IA, el papel transformador del aprendizaje por refuerzo en la creación de agentes autónomos, y el horizonte de los gemelos digitales como infraestructura del futuro industrial. Cierra la revista una actividad lúdica diseñada para que el lector experimente, en su propio navegador, los principios de la toma de decisiones en un entorno simulado.</p>
+
+      <p>Invitamos al lector a asumir una postura activa: cuestionar, explorar y —sobre todo— simular. Porque simular es, en el fondo, aprender sin riesgo.</p>
+    </div>
+    <div class="prologo-signature">
+      <div>
+        <div class="sig-name">Dr. Carlos Méndez Varela</div>
+        <div class="sig-role">Editor General · SIMULIA</div>
+      </div>
+      <div class="sig-date">Junio, 2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ÍNDICE ═══════════════════ -->
+<section id="indice">
+  <div class="indice-inner fade-in">
+    <h2 class="indice-title">Contenido</h2>
+    <ul class="indice-list">
+      <li class="indice-item"><a href="#prologo">
+        <span class="indice-num">00</span>
+        <span class="indice-name">Prólogo</span>
+        <span class="indice-dots"></span>
+        <span class="indice-page">P.01</span>
+      </a></li>
+      <li class="indice-item"><a href="#articulo1">
+        <span class="indice-num">01</span>
+        <span class="indice-name">La IA como Motor de Simulación</span>
+        <span class="indice-dots"></span>
+        <span class="indice-page">P.02</span>
+      </a></li>
+      <li class="indice-item"><a href="#articulo2">
+        <span class="indice-num">02</span>
+        <span class="indice-name">Aprendizaje por Refuerzo en Entornos Simulados</span>
+        <span class="indice-dots"></span>
+        <span class="indice-page">P.03</span>
+      </a></li>
+      <li class="indice-item"><a href="#articulo3">
+        <span class="indice-num">03</span>
+        <span class="indice-name">Gemelos Digitales: la Simulación del Futuro</span>
+        <span class="indice-dots"></span>
+        <span class="indice-page">P.04</span>
+      </a></li>
+      <li class="indice-item"><a href="#actividad">
+        <span class="indice-num">04</span>
+        <span class="indice-name">Actividad Lúdica — SimIA: Decisiones en Red</span>
+        <span class="indice-dots"></span>
+        <span class="indice-page">P.05</span>
+      </a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════ ARTÍCULO 1 ═══════════════════ -->
+<section id="articulo1" class="article-page">
+  <div class="article-inner fade-in">
+    <div class="article-category">Artículo 01 · Fundamentos</div>
+    <h2 class="article-title">La Inteligencia Artificial como Motor de los Nuevos Sistemas de Simulación</h2>
+    <p class="article-subtitle">Cómo el aprendizaje automático está redefiniendo la generación, validación y optimización de modelos computacionales</p>
+
+    <div class="article-image-placeholder" id="neural-bg">
+      <canvas id="canvas1"></canvas>
+    </div>
+    <p class="img-caption">↑ Representación conceptual de una red neuronal generando un entorno simulado en tiempo real.</p>
+
+    <div class="article-body">
+      <p>La simulación computacional lleva más de siete décadas siendo una herramienta fundamental de la ciencia y la ingeniería. Desde los primeros modelos numéricos del clima desarrollados en los años 50 hasta las actuales simulaciones de dinámica molecular, el principio ha permanecido constante: representar matemáticamente un sistema real para estudiar su comportamiento sin los costos —económicos, temporales o físicos— de la experimentación directa.</p>
+
+      <p>Sin embargo, la irrupción del aprendizaje automático, y particularmente del aprendizaje profundo (<em>deep learning</em>), está provocando una ruptura de paradigma. La inteligencia artificial no es ya solo una herramienta auxiliar para analizar los resultados de una simulación: se ha convertido en el motor que construye, adapta y enriquece los propios modelos simulados.</p>
+
+      <h3>Del modelo analítico al modelo aprendido</h3>
+      <p>La simulación tradicional parte de ecuaciones que describen con precisión la física o la lógica del sistema —ecuaciones de Navier-Stokes para fluidos, ecuaciones de Maxwell para electromagnetismo—. Este enfoque <em>basado en primeros principios</em> garantiza interpretabilidad, pero exige un conocimiento exhaustivo del dominio y resulta computacionalmente costoso cuando los sistemas son complejos o de alta dimensionalidad.</p>
+
+      <p>Los <strong>modelos sustitutos</strong> (<em>surrogate models</em>) o <em>emuladores</em> basados en redes neuronales ofrecen una alternativa: entrenar una red sobre datos generados por simuladores de alta fidelidad para que aprenda a predecir sus salidas con una fracción del costo computacional. Una vez entrenado, el modelo sustituto puede ejecutarse miles de veces más rápido que el simulador original.</p>
+
+      <div class="pullquote">
+        <p>"El modelo sustituto no reemplaza la física; la comprime. Lo que tarda horas en un supercomputador puede resolverse en milisegundos sobre una GPU de consumo."</p>
+      </div>
+
+      <h3>Redes neuronales informadas por física</h3>
+      <p>Una de las contribuciones más elegantes de la última década son las <strong>Physics-Informed Neural Networks (PINNs)</strong>, propuestas por Raissi, Perdikaris y Karniadakis (2019). Las PINNs incorporan las ecuaciones diferenciales del sistema como término de regularización en la función de pérdida, de modo que la red aprende soluciones consistentes con las leyes físicas conocidas incluso cuando los datos de entrenamiento son escasos o ruidosos. Esto resuelve uno de los mayores obstáculos de los enfoques puramente dirigidos por datos: la falta de garantías físicas en las predicciones.</p>
+
+      <h3>Generación de datos sintéticos para simulación</h3>
+      <p>Los modelos generativos —GAN, VAE, modelos de difusión— han abierto otra dimensión: la creación de datos sintéticos que aumentan los conjuntos de entrenamiento de simuladores basados en IA. En medicina, por ejemplo, los simuladores de escáneres de resonancia magnética generan miles de imágenes virtuales de patologías raras para entrenar sistemas de diagnóstico que jamás habrían encontrado suficientes casos reales. En robótica, los robots aprenden comportamientos en simulaciones fotorrealistas generadas por modelos de difusión antes de ser desplegados en entornos físicos.</p>
+
+      <div class="info-box">
+        <h4>Aplicaciones destacadas</h4>
+        <ul>
+          <li><strong>Climática:</strong> FourCastNet (NVIDIA) reduce en 45,000× el costo de predicción meteorológica global usando transformers.</li>
+          <li><strong>Farmacéutica:</strong> AlphaFold 3 simula interacciones proteína-ligando acelerando el diseño de fármacos.</li>
+          <li><strong>Aeroespacial:</strong> Boeing y Airbus usan modelos sustitutos para optimizar miles de configuraciones aerodinámicas en horas.</li>
+          <li><strong>Manufactura:</strong> Los simuladores de proceso asistidos por IA predicen defectos antes de la producción física.</li>
+        </ul>
+      </div>
+
+      <h3>Desafíos actuales</h3>
+      <p>A pesar de los avances, persisten retos fundamentales. La <em>transferibilidad</em> de los modelos aprendidos fuera de su dominio de entrenamiento sigue siendo limitada. La <em>incertidumbre</em> epistémica —cuánto no sabe el modelo— raramente se cuantifica de forma rigurosa. Y la <em>interpretabilidad</em> de redes profundas contrasta con la transparencia de los modelos analíticos clásicos, lo que dificulta su adopción en entornos regulados como la medicina o la energía nuclear.</p>
+
+      <p>El campo avanza a velocidad vertiginosa. Las fundaciones que se están sentando hoy —modelos de mundo (<em>world models</em>), operadores neurales, simulación diferenciable— prometen que en la próxima década los límites entre el mundo simulado y el aprendizaje sobre él prácticamente desaparecerán.</p>
+    </div>
+
+    <div class="bibliography">
+      <h4>Bibliografía</h4>
+      <ol>
+        <li>Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. <em>Journal of Computational Physics</em>, 378, 686–707. https://doi.org/10.1016/j.jcp.2018.10.045</li>
+        <li>Willard, J., Jia, X., Xu, S., Steinbach, M., & Kumar, V. (2022). Integrating scientific knowledge with machine learning for engineering and environmental systems. <em>ACM Computing Surveys</em>, 55(4), 1–37. https://doi.org/10.1145/3514228</li>
+        <li>Pathak, J., Subramanian, S., Harrington, P., & others (2022). FourCastNet: A global data-driven high-resolution weather model using adaptive Fourier neural operators. <em>arXiv preprint</em>, arXiv:2202.11214.</li>
+        <li>Brunton, S. L., & Kutz, J. N. (2022). <em>Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control</em> (2nd ed.). Cambridge University Press.</li>
+        <li>Jumper, J., Evans, R., Pritzel, A., & others (2021). Highly accurate protein structure prediction with AlphaFold. <em>Nature</em>, 596, 583–589. https://doi.org/10.1038/s41586-021-03819-2</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ARTÍCULO 2 ═══════════════════ -->
+<section id="articulo2" class="article-page">
+  <div class="article-inner fade-in">
+    <div class="article-category">Artículo 02 · Aprendizaje Autónomo</div>
+    <h2 class="article-title">Aprendizaje por Refuerzo en Entornos Simulados: del Juego a la Realidad</h2>
+    <p class="article-subtitle">Los entornos de simulación como laboratorios de entrenamiento para agentes inteligentes que aprenden mediante ensayo y error</p>
+
+    <div class="article-image-placeholder" id="rl-bg">
+      <canvas id="canvas2"></canvas>
+    </div>
+    <p class="img-caption">↑ Agente de aprendizaje por refuerzo explorando un entorno simulado de cuadrícula.</p>
+
+    <div class="article-body">
+      <p>Aprender haciendo es uno de los principios más antiguos de la pedagogía humana. La máquina imita este proceso mediante el <strong>aprendizaje por refuerzo</strong> (RL, por <em>Reinforcement Learning</em>): un agente explora un entorno, ejecuta acciones, recibe señales de recompensa o penalización, y gradualmente actualiza su política de comportamiento para maximizar la recompensa acumulada. Lo que hace única a esta rama del aprendizaje automático es que el agente no aprende de un conjunto fijo de ejemplos etiquetados, sino de su propia experiencia interactiva.</p>
+
+      <p>El problema es que el mundo real no perdona errores durante el aprendizaje. Un robot que aprende a caminar caería miles de veces; un vehículo autónomo que aprende a conducir podría provocar accidentes. Por ello, la simulación se convierte en el laboratorio esencial del RL moderno.</p>
+
+      <h3>El rol central de la simulación en el RL</h3>
+      <p>Las plataformas de simulación permiten entrenar agentes durante millones o miles de millones de pasos de tiempo —imposibles en el mundo real— a un costo marginal ínfimo. OpenAI Gym, MuJoCo, Unity ML-Agents, IsaacGym y Brax son algunos de los entornos que han estandarizado el campo, ofreciendo desde tareas de control continuo hasta simulaciones de física rígida de alta fidelidad aceleradas por GPU.</p>
+
+      <div class="pullquote">
+        <p>"AlphaGo Zero aprendió a jugar Go desde cero sin datos humanos, entrenando contra sí mismo en simulación durante cuatro días y superando a todos los programas existentes."</p>
+      </div>
+
+      <h3>Transferencia sim-to-real: el reto del dominio</h3>
+      <p>El gran desafío del RL simulado es la <em>brecha sim-to-real</em> (<em>sim-to-real gap</em>): las políticas aprendidas en simulación suelen degradarse cuando se despliegan en el mundo físico, porque el simulador no captura todas las imperfecciones del sistema real —fricción, latencia de sensores, variabilidad mecánica—. Las técnicas de <strong>domain randomization</strong>, popularizadas por OpenAI (2019) en sus trabajos de robótica dextral, ofrecen una solución elegante: entrenar bajo miles de variantes aleatorias del entorno simulado para que la política aprenda a comportarse bien ante la variabilidad que el mundo real inevitablemente introduce.</p>
+
+      <h3>RL profundo y simulación de alta fidelidad</h3>
+      <p>La combinación del RL con redes neuronales profundas —el <em>deep RL</em>— ha producido resultados que habrían parecido ciencia ficción hace una década. DeepMind AlphaStar alcanzó el nivel Grandmaster en StarCraft II tras entrenar el equivalente a 200 años de juego en simulación. OpenAI Five venció a campeones mundiales de Dota 2. En 2023, el sistema RT-2 de Google DeepMind demostró que un agente entrenado con RL en simulación podía transferir razonamiento semántico a tareas robóticas físicas con una tasa de éxito notable.</p>
+
+      <div class="info-box">
+        <h4>Hitos del RL en simulación</h4>
+        <ul>
+          <li><strong>2013 — DQN (DeepMind):</strong> Primera red profunda que aprende a jugar Atari a nivel humano directamente desde píxeles.</li>
+          <li><strong>2016 — AlphaGo:</strong> Combina Monte Carlo Tree Search con redes entrenadas en simulación para vencer al campeón mundial de Go.</li>
+          <li><strong>2019 — OpenAI Hand:</strong> Mano robótica aprende manipulación dextral mediante domain randomization.</li>
+          <li><strong>2022 — AlphaTensor:</strong> Descubre algoritmos de multiplicación matricial más eficientes que los conocidos por la humanidad.</li>
+          <li><strong>2024 — Eureka (NVIDIA):</strong> GPT-4 genera automáticamente funciones de recompensa para entrenar robots.</li>
+        </ul>
+      </div>
+
+      <h3>Aplicaciones fuera del juego</h3>
+      <p>Aunque los videojuegos han sido el banco de pruebas del RL, las aplicaciones de mayor impacto se perfilan en otros dominios. En <em>gestión de energía</em>, DeepMind demostró que RL puede reducir el consumo de refrigeración de centros de datos un 40%. En <em>logística</em>, sistemas de RL optimizan rutas de almacén en tiempo real. En <em>medicina</em>, agentes entrenados en simuladores de cirugía asistida por robot están dando sus primeros pasos en entornos controlados. En <em>finanzas</em>, los sistemas de <em>trading</em> algorítmico basados en RL simulan escenarios de mercado antes de operar con capital real.</p>
+
+      <p>El futuro del RL en simulación apunta hacia los <em>foundation models</em> de agentes —modelos pre-entrenados en millones de tareas simuladas que se especializan rápidamente con pocos ejemplos reales—, una línea que podría disolver definitivamente la distinción entre inteligencia artificial general y aplicada.</p>
+    </div>
+
+    <div class="bibliography">
+      <h4>Bibliografía</h4>
+      <ol>
+        <li>Mnih, V., Kavukcuoglu, K., Silver, D., & others (2015). Human-level control through deep reinforcement learning. <em>Nature</em>, 518, 529–533. https://doi.org/10.1038/nature14236</li>
+        <li>Silver, D., Schrittwieser, J., Simonyan, K., & others (2017). Mastering the game of Go without human knowledge. <em>Nature</em>, 550, 354–359. https://doi.org/10.1038/nature24270</li>
+        <li>Tobin, J., Fong, R., Ray, A., Schneider, J., Zaremba, W., & Abbeel, P. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. <em>arXiv preprint</em>, arXiv:1703.06907.</li>
+        <li>Vinyals, O., Babuschkin, I., Czarnecki, W. M., & others (2019). Grandmaster level in StarCraft II using multi-agent reinforcement learning. <em>Nature</em>, 575, 350–354. https://doi.org/10.1038/s41586-019-1724-z</li>
+        <li>Sutton, R. S., & Barto, A. G. (2018). <em>Reinforcement Learning: An Introduction</em> (2nd ed.). MIT Press.</li>
+        <li>Ma, Y., Liang, W., Wang, G., & others (2023). Eureka: Human-level reward design via coding large language models. <em>arXiv preprint</em>, arXiv:2310.12931.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ARTÍCULO 3 ═══════════════════ -->
+<section id="articulo3" class="article-page">
+  <div class="article-inner fade-in">
+    <div class="article-category">Artículo 03 · Tendencias</div>
+    <h2 class="article-title">Gemelos Digitales e IA: la Simulación Continua del Mundo Real</h2>
+    <p class="article-subtitle">Los digital twins como paradigma de integración entre el mundo físico y sus réplicas computacionales inteligentes</p>
+
+    <div class="article-image-placeholder" id="twin-bg">
+      <canvas id="canvas3"></canvas>
+    </div>
+    <p class="img-caption">↑ Representación esquemática del ciclo de datos entre un activo físico y su gemelo digital.</p>
+
+    <div class="article-body">
+      <p>Imaginemos una turbina de avión que envía en tiempo real decenas de miles de mediciones —temperatura, presión, vibración, eficiencia de combustión— a una réplica computacional que modela con precisión su estado interno. Cuando los algoritmos de IA detectan una anomalía en el gemelo, el equipo de mantenimiento recibe una alerta antes de que se manifieste cualquier fallo físico. Esto no es ciencia ficción: es el núcleo operacional de Rolls-Royce, General Electric y Siemens hoy.</p>
+
+      <p>El concepto de <strong>gemelo digital</strong> (<em>digital twin</em>) fue acuñado por Michael Grieves en 2003 en el contexto de la gestión del ciclo de vida de productos. Su definición original era sencilla: un modelo virtual del estado de un activo físico que se actualiza continuamente con datos reales. Lo que Grieves no podía anticipar era que la convergencia del IoT, el big data y la IA transformaría este concepto en una infraestructura tecnológica transversal.</p>
+
+      <h3>La arquitectura de un gemelo digital inteligente</h3>
+      <p>Un gemelo digital moderno integra tres capas fundamentales. La <em>capa de datos</em> agrega información proveniente de sensores IoT, registros históricos y fuentes externas. La <em>capa de modelo</em> combina simuladores físicos de alta fidelidad con modelos de ML que compensan las limitaciones del simulador y aprenden patrones no captados por las ecuaciones. La <em>capa de toma de decisiones</em> —donde la IA actúa como optimizador autónomo— genera recomendaciones o actúa directamente sobre el sistema físico a través de actuadores.</p>
+
+      <div class="pullquote">
+        <p>"Un gemelo digital sin IA es solo un modelo estático. Con IA, se convierte en un sistema vivo que aprende, predice y prescribe acciones sobre su contraparte física."</p>
+      </div>
+
+      <h3>Aplicaciones sectoriales</h3>
+      <p>En <strong>manufactura inteligente</strong>, los gemelos digitales de plantas completas permiten simular cambios de producción antes de implementarlos, eliminando tiempos de inactividad costosos. Siemens reporta reducciones del 20% en el tiempo de diseño de productos y del 16% en tiempo al mercado gracias a su plataforma de gemelos digitales. En <strong>salud</strong>, los gemelos digitales de pacientes son quizás la aplicación más revolucionaria: modelos personalizados del corazón, los pulmones o el sistema cardiovascular de un individuo concreto que permiten simular el efecto de tratamientos farmacológicos antes de administrarlos. El proyecto Living Heart de Dassault Systèmes es el ejemplo más avanzado disponible en entorno clínico. En <strong>ciudades inteligentes</strong>, el proyecto Gemela de Singapur (Virtual Singapore) ha creado un gemelo tridimensional de toda la isla-ciudad para planificación urbana, gestión de emergencias y optimización energética.</p>
+
+      <h3>El rol específico de la IA en los gemelos digitales</h3>
+      <p>La IA cumple funciones críticas y diferenciadas dentro del ecosistema del gemelo digital. El <em>aprendizaje continuo</em> permite que el modelo se actualice con nuevos datos sin necesidad de recalibración manual. La <em>detección de anomalías</em> con autoencoders o redes LSTM identifica desviaciones del comportamiento esperado con semanas o meses de antelación. Los modelos <em>generativos</em> pueden sintetizar escenarios hipotéticos —¿qué ocurre si la temperatura ambiente sube 3 °C? ¿y si la demanda se duplica en invierno?— sin necesidad de ejecutar simulaciones físicas costosas.</p>
+
+      <div class="info-box">
+        <h4>El mercado de los gemelos digitales</h4>
+        <ul>
+          <li>Valorado en USD 10.1 mil millones en 2023 (MarketsandMarkets).</li>
+          <li>Proyección de USD 110.1 mil millones para 2028 (CAGR del 61.3%).</li>
+          <li>Los sectores de mayor adopción: manufactura (34%), energía (21%), salud (18%).</li>
+          <li>NVIDIA Omniverse y Microsoft Azure Digital Twins lideran el mercado de plataformas.</li>
+        </ul>
+      </div>
+
+      <h3>Desafíos técnicos y éticos</h3>
+      <p>La implantación masiva de gemelos digitales plantea desafíos no resueltos. La <em>sincronización en tiempo real</em> requiere infraestructuras de borde (<em>edge computing</em>) capaces de procesar petabytes de datos con latencias mínimas. La <em>seguridad</em> es crítica: un gemelo digital comprometido puede manipular el sistema físico con consecuencias catastróficas en infraestructuras críticas. Desde la perspectiva ética, los gemelos digitales de personas plantean preguntas profundas sobre privacidad, consentimiento y la posibilidad de tomar decisiones médicas de alto impacto basadas en modelos probabilísticos imperfectos.</p>
+
+      <p>A pesar de estos retos, el consenso en la comunidad investigadora y la industria es que los gemelos digitales no son una tendencia pasajera, sino la columna vertebral de la cuarta revolución industrial. La pregunta ya no es si el mundo físico tendrá una réplica digital inteligente, sino cuándo y con qué nivel de fidelidad.</p>
+    </div>
+
+    <div class="bibliography">
+      <h4>Bibliografía</h4>
+      <ol>
+        <li>Grieves, M. W. (2014). Digital twin: Manufacturing excellence through virtual factory replication. <em>White Paper</em>. Florida Institute of Technology. Recuperado de https://www.researchgate.net/publication/275211047</li>
+        <li>Tao, F., Zhang, H., Liu, A., & Nee, A. Y. C. (2019). Digital twin in industry: State-of-the-art. <em>IEEE Transactions on Industrial Informatics</em>, 15(4), 2405–2415. https://doi.org/10.1109/TII.2018.2873186</li>
+        <li>MarketsandMarkets. (2023). <em>Digital twin market — Global forecast to 2028</em>. MarketsandMarkets Research. Recuperado de https://www.marketsandmarkets.com/digital-twin-market</li>
+        <li>Niederer, S. A., Sacks, M. S., Girolami, M., & Willcox, K. (2021). Scaling digital twins from the artisanal to the industrial. <em>Nature Computational Science</em>, 1, 313–320. https://doi.org/10.1038/s43588-021-00072-5</li>
+        <li>Rasheed, A., San, O., & Kvamsdal, T. (2020). Digital twin: Values, challenges and enablers from a modeling perspective. <em>IEEE Access</em>, 8, 21980–22012. https://doi.org/10.1109/ACCESS.2020.2970143</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ACTIVIDAD LÚDICA ═══════════════════ -->
+<section id="actividad">
+  <div class="actividad-inner">
+    <div class="actividad-header fade-in">
+      <div class="tag">Actividad Lúdica · Hoja 05</div>
+      <h2>SimIA: Decisiones en Red</h2>
+      <p>Un agente de IA debe clasificar nodos de una red neuronal según su tipo. ¿Puedes identificar el patrón de activación correcto antes de que el tiempo se agote?</p>
+    </div>
+
+    <div id="game-container" class="fade-in">
+      <div id="game-header">
+        <span class="game-title">◈ SIMULIA / ACTIVIDAD INTERACTIVA</span>
+        <div id="game-stats">
+          <div class="stat">PUNTOS: <span id="score">0</span></div>
+          <div class="stat">RONDA: <span id="round">1</span>/8</div>
+          <div class="stat">TIEMPO: <span id="timer">15</span>s</div>
+        </div>
+      </div>
+      <div id="game-canvas-wrapper">
+        <canvas id="gameCanvas" height="400"></canvas>
+        <div id="feedback"></div>
+        <div id="game-message">
+          <h3>SimIA: Decisiones en Red</h3>
+          <p>Observa el nodo resaltado y clasifícalo según su tipo de capa. ¡Tienes 15 segundos por ronda!</p>
+          <button class="btn-game" onclick="startGame()">INICIAR SIMULACIÓN</button>
+        </div>
+      </div>
+      <div id="game-footer">
+        <p class="instructions">Haz clic en <b>ENTRADA</b>, <b>OCULTA</b> o <b>SALIDA</b> para clasificar el nodo resaltado</p>
+        <div style="display:flex;gap:0.5rem;">
+          <button class="btn-game" id="btn-input" onclick="answer('input')" disabled>ENTRADA</button>
+          <button class="btn-game" id="btn-hidden" onclick="answer('hidden')" style="background:var(--teal);" disabled>OCULTA</button>
+          <button class="btn-game" id="btn-output" onclick="answer('output')" style="background:var(--accent2);" disabled>SALIDA</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity-rules fade-in">
+      <div class="rule-card">
+        <div class="icon">🔵</div>
+        <h4>Nodo de Entrada</h4>
+        <p>Recibe los datos del mundo exterior. Primera columna de la red. Sin conexiones entrantes.</p>
+      </div>
+      <div class="rule-card">
+        <div class="icon">🟡</div>
+        <h4>Capa Oculta</h4>
+        <p>Procesa y transforma las representaciones intermedias. El corazón del aprendizaje profundo.</p>
+      </div>
+      <div class="rule-card">
+        <div class="icon">🔴</div>
+        <h4>Nodo de Salida</h4>
+        <p>Produce la predicción o decisión final. Última capa de la arquitectura.</p>
+      </div>
+      <div class="rule-card">
+        <div class="icon">⚡</div>
+        <h4>Objetivo</h4>
+        <p>Clasifica 8 nodos correctamente. Cada acierto suma 10 puntos; los errores restan 5. ¡Máximo: 80 pts!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">SIM<span>ULIA</span></div>
+  <p>Revista Digital Académica · Vol. 1 · No. 1 · Junio 2025</p>
+  <p>Simulación & Inteligencia Artificial · Todos los derechos reservados</p>
+  <p style="margin-top:1rem;font-size:0.55rem;opacity:0.4;">ISSN (en trámite) · Publicación digital periódica · Distribución académica libre</p>
+</footer>
+
+<!-- ─────────── SCRIPTS ─────────── -->
+<script>
+/* ── Fade-in on scroll ── */
+const observerFade = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observerFade.observe(el));
+
+/* ── Canvas 1: Neural Network ── */
+function drawNeuralCanvas() {
+  const canvas = document.getElementById('canvas1');
+  if (!canvas) return;
+  const parent = canvas.parentElement;
+  canvas.width = parent.offsetWidth;
+  canvas.height = parent.offsetHeight;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const layers = [3, 5, 5, 3];
+  const nodeRadius = 10;
+  const layerX = layers.map((_, i) => W * 0.15 + (W * 0.7 / (layers.length - 1)) * i);
+  const nodes = layers.map((count, li) => {
+    const xs = Array.from({ length: count }, (_, ni) => ({
+      x: layerX[li],
+      y: H * 0.15 + (H * 0.7 / (count + 1)) * (ni + 1),
+      pulse: Math.random() * Math.PI * 2
+    }));
+    return xs;
+  });
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.02;
+    // connections
+    for (let li = 0; li < layers.length - 1; li++) {
+      for (const a of nodes[li]) {
+        for (const b of nodes[li + 1]) {
+          const alpha = 0.08 + 0.07 * Math.sin(t + a.pulse);
+          ctx.strokeStyle = `rgba(37,99,200,${alpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    // nodes
+    nodes.forEach((layer, li) => {
+      const colors = ['#2563c8', '#1a7a6e', '#c8972a', '#c84b31'];
+      layer.forEach(n => {
+        const pulse = 0.6 + 0.4 * Math.sin(t * 1.5 + n.pulse);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, nodeRadius * pulse, 0, Math.PI * 2);
+        ctx.fillStyle = colors[li] + '99';
+        ctx.fill();
+        ctx.strokeStyle = colors[li];
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      });
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ── Canvas 2: RL Grid ── */
+function drawRLCanvas() {
+  const canvas = document.getElementById('canvas2');
+  if (!canvas) return;
+  const parent = canvas.parentElement;
+  canvas.width = parent.offsetWidth;
+  canvas.height = parent.offsetHeight;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const COLS = 12, ROWS = 6;
+  const cw = W / COLS, ch = H / ROWS;
+
+  const agent = { col: 0, row: Math.floor(ROWS / 2), t: 0 };
+  const path = [];
+  let step = 0;
+
+  function update() {
+    step++;
+    if (step % 12 === 0) {
+      path.push({ col: agent.col, row: agent.row });
+      if (path.length > 20) path.shift();
+      agent.col = Math.min(COLS - 1, agent.col + 1);
+      if (agent.col === COLS - 1) { agent.col = 0; path.length = 0; }
+      agent.row = Math.max(0, Math.min(ROWS - 1, agent.row + (Math.random() < 0.5 ? -1 : 1)));
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    update();
+
+    // Grid
+    for (let c = 0; c < COLS; c++) {
+      for (let r = 0; r < ROWS; r++) {
+        ctx.strokeStyle = 'rgba(37,99,200,0.12)';
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(c * cw, r * ch, cw, ch);
+      }
+    }
+
+    // Path
+    path.forEach((p, i) => {
+      const alpha = (i / path.length) * 0.4;
+      ctx.fillStyle = `rgba(200,151,42,${alpha})`;
+      ctx.fillRect(p.col * cw + 2, p.row * ch + 2, cw - 4, ch - 4);
+    });
+
+    // Agent
+    const ax = agent.col * cw + cw / 2;
+    const ay = agent.row * ch + ch / 2;
+    ctx.beginPath();
+    ctx.arc(ax, ay, Math.min(cw, ch) * 0.35, 0, Math.PI * 2);
+    ctx.fillStyle = '#c84b31';
+    ctx.fill();
+    ctx.strokeStyle = '#f5f0e8';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Goal
+    const gx = (COLS - 1) * cw + cw / 2;
+    const gy = agent.row * ch + ch / 2;
+    ctx.beginPath();
+    ctx.arc(gx, gy, Math.min(cw, ch) * 0.3, 0, Math.PI * 2);
+    ctx.fillStyle = '#4ade80';
+    ctx.fill();
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ── Canvas 3: Digital Twin ── */
+function drawTwinCanvas() {
+  const canvas = document.getElementById('canvas3');
+  if (!canvas) return;
+  const parent = canvas.parentElement;
+  canvas.width = parent.offsetWidth;
+  canvas.height = parent.offsetHeight;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  let t = 0;
+  const particles = Array.from({ length: 40 }, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+    r: 2 + Math.random() * 3,
+    phase: Math.random() * Math.PI * 2
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.015;
+
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+      const a = 0.3 + 0.3 * Math.sin(t + p.phase);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(26,122,110,${a})`;
+      ctx.fill();
+    });
+
+    particles.forEach((a, i) => {
+      for (let j = i + 1; j < particles.length; j++) {
+        const b = particles[j];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < 90) {
+          ctx.strokeStyle = `rgba(26,122,110,${(1 - d / 90) * 0.25})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    });
+
+    // Sine wave overlay
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(200,151,42,0.5)';
+    ctx.lineWidth = 2;
+    for (let x = 0; x <= W; x += 2) {
+      const y = H / 2 + Math.sin(x * 0.02 + t * 2) * H * 0.15;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    drawNeuralCanvas();
+    drawRLCanvas();
+    drawTwinCanvas();
+  }, 100);
+});
+
+/* ════════════════════════════════
+   JUEGO: SimIA - Decisiones en Red
+════════════════════════════════ */
+let score = 0, round = 0, timerVal = 15, timerInterval = null;
+let currentQuestion = null, gameActive = false;
+
+const TOTAL_ROUNDS = 8;
+
+const questions = [
+  { type: 'input',  hint: 'Este nodo no recibe conexiones desde capas anteriores. Es el primer contacto con los datos.' },
+  { type: 'hidden', hint: 'Este nodo recibe activaciones de una capa anterior y las transforma. Está en el interior de la red.' },
+  { type: 'output', hint: 'Este nodo genera la predicción final. Es la última capa de la arquitectura.' },
+  { type: 'hidden', hint: 'Este nodo aplica una función de activación sobre múltiples entradas y propaga hacia la siguiente capa.' },
+  { type: 'input',  hint: 'Sin conexiones de entrada; recibe directamente las características del dataset.' },
+  { type: 'output', hint: 'Sus valores corresponden a las probabilidades de cada clase en una tarea de clasificación.' },
+  { type: 'hidden', hint: 'Puede ser parte de una capa de convolución, atención o densa. No es entrada ni salida.' },
+  { type: 'input',  hint: 'Recibe valores como píxeles, tokens o señales de sensores sin procesar.' },
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const shuffledQ = shuffle(questions).slice(0, TOTAL_ROUNDS);
+
+function startGame() {
+  score = 0; round = 0;
+  document.getElementById('game-message').classList.add('hidden');
+  document.getElementById('score').textContent = '0';
+  enableButtons(true);
+  nextRound();
+}
+
+function nextRound() {
+  if (round >= TOTAL_ROUNDS) { endGame(); return; }
+  currentQuestion = shuffledQ[round];
+  round++;
+  document.getElementById('round').textContent = round;
+  timerVal = 15;
+  document.getElementById('timer').textContent = timerVal;
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timerVal--;
+    document.getElementById('timer').textContent = timerVal;
+    if (timerVal <= 0) {
+      clearInterval(timerInterval);
+      showFeedback(false, 'TIEMPO');
+      score = Math.max(0, score - 5);
+      document.getElementById('score').textContent = score;
+      setTimeout(nextRound, 1200);
+    }
+  }, 1000);
+  drawGame(currentQuestion);
+  gameActive = true;
+}
+
+function answer(type) {
+  if (!gameActive) return;
+  gameActive = false;
+  clearInterval(timerInterval);
+  const correct = type === currentQuestion.type;
+  if (correct) {
+    score += 10;
+    showFeedback(true, '+10');
+  } else {
+    score = Math.max(0, score - 5);
+    showFeedback(false, '-5');
+  }
+  document.getElementById('score').textContent = score;
+  setTimeout(nextRound, 1200);
+}
+
+function showFeedback(correct, text) {
+  const el = document.getElementById('feedback');
+  el.textContent = text;
+  el.className = correct ? 'correct' : 'wrong';
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0'; }, 900);
+}
+
+function enableButtons(on) {
+  ['btn-input', 'btn-hidden', 'btn-output'].forEach(id => {
+    document.getElementById(id).disabled = !on;
+  });
+}
+
+function endGame() {
+  enableButtons(false);
+  const msg = document.getElementById('game-message');
+  msg.classList.remove('hidden');
+  const grade = score >= 70 ? '🏆 ¡Excelente!' : score >= 40 ? '🎯 Bien hecho' : '💡 ¡Sigue practicando!';
+  msg.innerHTML = `
+    <h3>${grade}</h3>
+    <p>Puntuación final: <strong style="color:var(--gold);font-size:1.5rem;">${score}/80</strong><br>
+    Has completado la simulación de clasificación de redes neuronales.</p>
+    <button class="btn-game" onclick="restartGame()">REINICIAR</button>
+  `;
+}
+
+function restartGame() {
+  const shuffled = shuffle(questions).slice(0, TOTAL_ROUNDS);
+  shuffledQ.splice(0, shuffledQ.length, ...shuffled);
+  startGame();
+}
+
+function drawGame(q) {
+  const canvas = document.getElementById('gameCanvas');
+  const W = canvas.width = canvas.parentElement.offsetWidth;
+  const H = canvas.height = 400;
+  const ctx = canvas.getContext('2d');
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  ctx.fillStyle = '#0d1117';
+  ctx.fillRect(0, 0, W, H);
+
+  const layerDef = [3, 4, 4, 2];
+  const layerLabels = ['Entrada', 'Oculta 1', 'Oculta 2', 'Salida'];
+  const layerColors = ['#2563c8', '#1a7a6e', '#c8972a', '#c84b31'];
+  const marginX = W * 0.12;
+  const layerX = layerDef.map((_, i) => marginX + ((W - marginX * 2) / (layerDef.length - 1)) * i);
+  const nodes = layerDef.map((count, li) => Array.from({ length: count }, (_, ni) => ({
+    x: layerX[li],
+    y: H * 0.15 + (H * 0.7 / (count + 1)) * (ni + 1),
+    layer: li, ni
+  })));
+
+  // Target node
+  const typeToLayer = { input: 0, hidden: [1, 2], output: 3 };
+  let targetLayer, targetNi;
+  if (q.type === 'input') { targetLayer = 0; targetNi = Math.floor(Math.random() * layerDef[0]); }
+  else if (q.type === 'output') { targetLayer = 3; targetNi = Math.floor(Math.random() * layerDef[3]); }
+  else {
+    targetLayer = Math.random() < 0.5 ? 1 : 2;
+    targetNi = Math.floor(Math.random() * layerDef[targetLayer]);
+  }
+
+  // Connections
+  for (let li = 0; li < layerDef.length - 1; li++) {
+    for (const a of nodes[li]) {
+      for (const b of nodes[li + 1]) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+    }
+  }
+
+  // Layer labels
+  layerX.forEach((lx, li) => {
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.font = '10px Space Mono, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(layerLabels[li].toUpperCase(), lx, H - 12);
+  });
+
+  // Nodes
+  const R = Math.min(14, W * 0.018);
+  nodes.forEach((layer, li) => {
+    layer.forEach(n => {
+      const isTarget = li === targetLayer && n.ni === targetNi;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, isTarget ? R * 1.6 : R, 0, Math.PI * 2);
+      if (isTarget) {
+        const pulse = 0.7 + 0.3 * Math.sin(Date.now() * 0.004);
+        ctx.fillStyle = `rgba(255,255,255,${0.2 * pulse})`;
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2.5;
+      } else {
+        ctx.fillStyle = layerColors[li] + '44';
+        ctx.fill();
+        ctx.strokeStyle = layerColors[li];
+        ctx.lineWidth = 1.2;
+      }
+      ctx.stroke();
+    });
+  });
+
+  // Hint text
+  const lines = wrapText(q.hint, 60);
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.font = '13px DM Sans, sans-serif';
+  ctx.textAlign = 'center';
+  lines.forEach((line, i) => ctx.fillText(line, W / 2, 22 + i * 18));
+
+  // Arrow pointing to target
+  const tn = nodes[targetLayer][targetNi];
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(tn.x, tn.y - R * 2.5);
+  ctx.lineTo(tn.x, tn.y - R * 1.8);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Animate
+  if (gameActive) requestAnimationFrame(() => drawGame(q));
+}
+
+function wrapText(text, maxLen) {
+  const words = text.split(' ');
+  const lines = [];
+  let line = '';
+  for (const w of words) {
+    if ((line + w).length > maxLen) { lines.push(line.trim()); line = ''; }
+    line += w + ' ';
+  }
+  if (line.trim()) lines.push(line.trim());
+  return lines;
+}
+</script>
+</body>
+</html>
